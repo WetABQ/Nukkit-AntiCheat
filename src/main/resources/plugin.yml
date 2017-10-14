@@ -1,0 +1,6 @@
+name: AntiCheat
+version: "1.0.0"
+api: ["1.0.0"]
+author: WetABQ
+description: "AntiCheat Plugin"
+main: top.dreamcity.AntiCheat.AntiCheat
