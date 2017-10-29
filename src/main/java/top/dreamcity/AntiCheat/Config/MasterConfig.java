@@ -3,6 +3,7 @@ package top.dreamcity.AntiCheat.Config;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
 import top.dreamcity.AntiCheat.AntiCheat;
+import top.dreamcity.AntiCheat.AntiCheatAPI;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,9 @@ public class MasterConfig {
 
     private ArrayList<String> SensitiveWords;
 
+    private String SkinPath;
+
+
 
     public MasterConfig(ConfigSection configSection){
         config = configSection;
@@ -76,6 +80,7 @@ public class MasterConfig {
             chatSec = config.getInt("chatSec");
             checkKillAuraCPS = config.getInt("checkKillAuraCPS");
             SensitiveWords = (ArrayList) config.get("SensitiveWords");
+            SkinPath = config.getString("RobotSkinPath");
         }else{
             spawnDefaultConfig();
         }
@@ -99,6 +104,7 @@ public class MasterConfig {
         SensitiveWords = new ArrayList<>();
         SensitiveWords.add("fuck");
         SensitiveWords.add("shit");
+        SkinPath = AntiCheatAPI.getInstance().getDataFolder()+"/Steve.png";
         save();
     }
 
@@ -118,6 +124,7 @@ public class MasterConfig {
             config.put("antiKillAura", antiKillAura);
             config.put("antiAutoAim", antiAutoAim);
             config.put("checkKillAuraCPS", checkKillAuraCPS);
+            config.put("RobotSkinPath", SkinPath);
             Config c = new Config(AntiCheat.getInstance().getDataFolder() + "/config.yml", Config.YAML);
             c.setAll(config);
             c.save();
@@ -185,5 +192,9 @@ public class MasterConfig {
 
     public float getMaxMoveSpeed() {
         return maxMoveSpeed;
+    }
+
+    public String getSkinPath() {
+        return SkinPath;
     }
 }

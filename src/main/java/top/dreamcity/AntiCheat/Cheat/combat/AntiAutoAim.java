@@ -2,13 +2,18 @@ package top.dreamcity.AntiCheat.Cheat.combat;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.data.EntityMetadata;
-import cn.nukkit.entity.data.FloatEntityData;
-import cn.nukkit.item.Item;
-import cn.nukkit.network.protocol.AddPlayerPacket;
+import cn.nukkit.level.Position;
 import cn.nukkit.network.protocol.MoveEntityPacket;
+import top.dreamcity.AntiCheat.AntiCheatAPI;
 import top.dreamcity.AntiCheat.Event.CheckCheatEvent;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+
 
 /**
  * Copyright © 2017 WetABQ&DreamCityAdminGroup All right reserved.
@@ -26,8 +31,9 @@ import top.dreamcity.AntiCheat.Event.CheckCheatEvent;
 public class AntiAutoAim extends Combat {
     public AntiAutoAim(Player player) {
         super(player);
+        addDummy();
     }
-    private long eid;
+    private NPC npc;
 
     @Override
     public CheatType getCheatType() {
@@ -44,14 +50,14 @@ public class AntiAutoAim extends Combat {
     }
 
     private void addDummy() {
-        AddPlayerPacket pk = new AddPlayerPacket();
+        /*ddPlayerPacket pk = new AddPlayerPacket();
         eid = pk.entityRuntimeId = pk.entityUniqueId = Entity.entityCount++;
         pk.item = Item.get(Item.BOW);
         pk.speedX = pk.speedY = pk.speedZ = 0;
         pk.pitch = pk.yaw = 90;
         pk.metadata = new EntityMetadata().put(new FloatEntityData(39, 0.1F));
         pk.x = (float) player.getX();
-        pk.y = (float) player.getY();
+        pk.y = (float) player.getY() + 1.5F;
         pk.z = (float) player.getZ();
         AddPlayerPacket pk1 = ((AddPlayerPacket) (pk.clone()));
         AddPlayerPacket pk2 = ((AddPlayerPacket) (pk.clone()));
@@ -64,16 +70,43 @@ public class AntiAutoAim extends Combat {
         player.dataPacket(pk1);
         player.dataPacket(pk2);
         player.dataPacket(pk3);
-        player.dataPacket(pk4);
+        player.dataPacket(pk4);*/
+        byte[] skin = image(AntiCheatAPI.getInstance().getMasterConfig().getSkinPath());
+        NPC npc = new NPC(new Position(player.getX(), player.getY(), player.getZ(), player.getLevel()), skin, player);
+        npc.setNameTag("");
+        npc.setScale(0.01F);
+        this.npc = npc;
     }
 
     public void move(Player player){
-        MoveEntityPacket pk = new MoveEntityPacket();
-        pk.x = player.x;
-        pk.y = player.y;
-        pk.z = player.z;
-        pk.eid = eid;
-        pk.yaw = pk.pitch = pk.headYaw = 0.0D;
-        player.dataPacket(pk);
+        npc.teleport(new Position(player.x,player.y+1,player.z,player.level));
+    }
+
+    private static byte[] image(String path){
+        File file = new File(path);
+        BufferedImage image;
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException var5) {
+            throw new RuntimeException(var5);
+        }
+        return parseBufferedImage(image);
+    }
+
+    private static byte[] parseBufferedImage(BufferedImage image) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        for(int y = 0; y < image.getHeight(); ++y) {
+            for(int x = 0; x < image.getWidth(); ++x) {
+                Color color = new Color(image.getRGB(x, y), true);
+                outputStream.write(color.getRed());
+                outputStream.write(color.getGreen());
+                outputStream.write(color.getBlue());
+                outputStream.write(color.getAlpha());
+            }
+        }
+
+        image.flush();
+        return outputStream.toByteArray();
     }
 }

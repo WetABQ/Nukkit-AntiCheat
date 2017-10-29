@@ -79,7 +79,7 @@ public class EventListener implements Listener {
             if (checkBB.isCheat()) {
                 AntiCheatAPI.getInstance().addRecord(player, checkBB.getCheatType());
                 //player.sendMessage(TextFormat.RED+"We detected that you used to accelerate. Perhaps this is a misjudgment.");
-                player.teleport(player.getLocation().add(0,1,0));
+                //player.teleport(player.getLocation().add(0,1.5,0));
                 event.setCancelled();
             }
         }

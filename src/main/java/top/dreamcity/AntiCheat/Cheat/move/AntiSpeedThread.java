@@ -109,7 +109,7 @@ public class AntiSpeedThread implements Runnable{
             fs = fs / 8;
             fs = fs*10;
             finalSpeed.put(name,fs);
-            Server.getInstance().getPlayer(name).sendPopup(TextFormat.GREEN+"Speed:"+ fs+"                             \n\n\n");
+            //Server.getInstance().getPlayer(name).sendPopup(TextFormat.GREEN+"Speed:"+ fs+"                             \n\n\n");
             move.put(1,-1F);
             move.put(2,-1F);
             move.put(3,-1F);
