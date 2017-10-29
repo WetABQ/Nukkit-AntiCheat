@@ -36,7 +36,7 @@ public class AntiCheat extends PluginBase implements AntiCheatAPI{
     @Override
     public void onLoad(){
         instance = this;
-        saveResource("Steve.png");
+        this.saveResource("Steve.png");
         this.getLogger().notice("AntiCheat - Load");
     }
 
