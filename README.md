@@ -37,6 +37,7 @@ SensitiveWords:
 antiKillAura: true
 antiAutoAim: true
 checkKillAuraCPS: 3
+RobotSkinPath: xxxx/plugins/AntiCheat/Steve.png
 ```
 
 --------
