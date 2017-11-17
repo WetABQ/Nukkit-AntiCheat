@@ -9,6 +9,7 @@ import cn.nukkit.utils.TextFormat;
 import top.dreamcity.AntiCheat.AntiCheatAPI;
 import top.dreamcity.AntiCheat.Cheat.AntiCheat;
 import top.dreamcity.AntiCheat.Cheat.move.ReportFlyThread;
+import top.dreamcity.AntiCheat.Cheat.move.ReportSpeedThread;
 
 import java.util.HashMap;
 
@@ -57,6 +58,13 @@ public class ReportCommand extends Command{
             }
             int type = -1;
             switch (args[1].toLowerCase()) {
+                case "加速":
+                case "速度":
+                case "speed":
+                case "s":
+                case "sp":
+                    type = 0;
+                    break;
                 case "飞行":
                 case "f":
                 case "fly":
@@ -65,12 +73,19 @@ public class ReportCommand extends Command{
             }
             AntiCheat.CheatType cheatType = null;
             switch (type) {
+                case 0:
+                    cheatType = AntiCheat.CheatType.SPEED;
+                    break;
                 case 1:
                     cheatType = AntiCheat.CheatType.FLY;
                     break;
                 default:
-                    sender.sendMessage(TextFormat.RED + "Unknown type! For example: fly f 飞行");
+                    sender.sendMessage(TextFormat.RED + "Unknown type! For example: fly f 飞行 s sp speed 速度 加速");
                     return true;
+            }
+            if(AntiCheatAPI.getInstance().reportPlayer.containsKey(p.getName())){
+                sender.sendMessage(TextFormat.GREEN + "Please do not repeat the report");
+                return true;
             }
             AntiCheatAPI.getInstance().reportPlayer.put(p.getName(), cheatType);
             Server.getInstance().getLogger().warning("Player "+sender.getName()+" report "+p.getName()+" cheat type:"+cheatType.getTypeName());
@@ -84,11 +99,15 @@ public class ReportCommand extends Command{
 
     private void addReportThread(Player player, AntiCheat.CheatType type){
         switch(type.getTypeName()){
-            /*case "fly":
+            case "fly":
                 AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportFlyThread(player));
-                break;*/
+                break;
+            case "speed":
+                AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportSpeedThread(player));
+                break;
             default:
                 AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportFlyThread(player));
+                AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportSpeedThread(player));
                 break;
         }
     }

@@ -6,6 +6,7 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import top.dreamcity.AntiCheat.Cheat.Report;
 import top.dreamcity.AntiCheat.Cheat.chat.CheckChatThread;
+import top.dreamcity.AntiCheat.Cheat.move.AntiFlyThread;
 import top.dreamcity.AntiCheat.Cheat.move.AntiSpeedThread;
 import top.dreamcity.AntiCheat.Command.ReportCommand;
 import top.dreamcity.AntiCheat.Config.MasterConfig;
@@ -69,6 +70,7 @@ public class AntiCheat extends PluginBase implements AntiCheatAPI{
     private void initAntiThread(){
         new AntiSpeedThread();
         new CheckChatThread();
+        new AntiFlyThread();
     }
 
     private void initConfig(){

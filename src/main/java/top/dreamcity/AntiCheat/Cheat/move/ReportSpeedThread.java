@@ -1,6 +1,7 @@
 package top.dreamcity.AntiCheat.Cheat.move;
 
 import cn.nukkit.Player;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.TextFormat;
 import top.dreamcity.AntiCheat.AntiCheatAPI;
@@ -19,60 +20,49 @@ import top.dreamcity.AntiCheat.Cheat.Report;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class ReportFlyThread extends Report implements Runnable{
+public class ReportSpeedThread extends Report implements Runnable{
     private Thread thread;
 
-    public ReportFlyThread(Player player){
+    public ReportSpeedThread(Player player){
         super(player);
         this.thread = new Thread(this);
         thread.start();
     }
 
-    @Override
-    public void run() {
+    public void run(){
         try {
             if (player.isOnline() && !player.isOp() && player.getGamemode() == 0) {
                 boolean flag = false;
-                if (player.isOnGround()) {
-                    if(player.getLevel().getBlock(player.add(0,-1,0)).getId() == 0 && player.getLevel().getBlock(player).getId() != 0){
-                        double y = player.y;
-                        thread.sleep(5*1000);
-                        if(player.getLevel().getBlock(player.add(0,-1,0)).getId() == 0 && player.getLevel().getBlock(player).getId() != 0 && y<=player.y){
+                float move = AntiSpeedThread.getMove(player.getName());
+                thread.sleep(1000);
+                float move2 = AntiSpeedThread.getMove(player.getName());
+                float m = AntiCheatAPI.getInstance().getMasterConfig().getMaxMoveSpeed();
+                if(move >= m || move2 >= m){
+                    player.setMotion(new Vector3(0,0,0));
+                    player.teleport(player);
+                    thread.sleep(1000*2);
+                    move = AntiSpeedThread.getMove(player.getName());
+                    thread.sleep(1000);
+                    move2 = AntiSpeedThread.getMove(player.getName());
+                    if(move >= m || move2 >= m){
+                        if(move >= m && move2 >= m){
                             flag = true;
-                        }else{
-                            y = player.y;
-                            if(player.move(0,-3,0)) {
-                                if(player.move(0,-3,0)) {
-                                    if (player.y + 6 == y) {
-                                        flag = true;
-                                    }
-                                }
-                            }
                         }
-                    }
-                } else {
-                    double y = player.y;
-                    thread.sleep(5*1000);
-                    //Player Jump : Normal[1.25] Jump_Effect_Level1[1+15/16] Jump_Effect_Level2[2.5]
-                    if(player.y == y){
-                        flag = true;
-                    }
-                    y = player.y;
-                    if(player.move(0,-3,0)) {
-                        if(player.move(0,-3,0)) {
-                            if (player.y + 6 == y) {
+                        if(!flag) {
+                            if (Math.abs(move2 - move) >= m - Math.min(move, move2)){
                                 flag = true;
                             }
                         }
                     }
                 }
+
                 if(flag){
-                    player.kick(TextFormat.AQUA+"Cheat Type: "+TextFormat.RED+"Fly");
+                    player.kick(TextFormat.AQUA+"Cheat Type: "+TextFormat.RED+"Speed");
                 }
             }
             AntiCheatAPI.getInstance().reportPlayer.remove(player.getName());
             AntiCheatAPI.getInstance().reportThread.remove(player.getName());
-        }catch (InterruptedException e){
+        }catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
