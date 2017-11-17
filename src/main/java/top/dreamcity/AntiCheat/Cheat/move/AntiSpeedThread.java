@@ -3,7 +3,6 @@ package top.dreamcity.AntiCheat.Cheat.move;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
-import cn.nukkit.utils.TextFormat;
 
 import java.util.HashMap;
 

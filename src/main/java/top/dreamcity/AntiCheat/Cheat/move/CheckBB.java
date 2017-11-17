@@ -40,7 +40,7 @@ public class CheckBB extends Move {
         if (event.isCancelled()) return false;
         double radius = (double) player.getWidth() / 2.0D;
         AxisAlignedBB bb = player.getBoundingBox().clone().setBounds(
-                player.x - radius + 0.2D, player.y + 0.85D, player.z - radius + 0.2D,
+                player.x - radius + 0.2D, player.y + 1.05D, player.z - radius + 0.2D,
                 player.x + radius - 0.2D, player.y + (double) (player.getHeight() * player.scale), player.z + radius - 0.2D
         );
         for (Block block : player.getBlocksAround()) {

@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.entity.EntityTeleportEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
@@ -16,6 +17,7 @@ import top.dreamcity.AntiCheat.Cheat.move.AntiSpeed;
 import top.dreamcity.AntiCheat.Cheat.move.CheckBB;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Copyright © 2017 WetABQ&DreamCityAdminGroup All right reserved.
@@ -33,8 +35,16 @@ import java.util.HashMap;
 public class EventListener implements Listener {
 
     private HashMap<String, AntiAutoAim> AntiAutoAim = new HashMap<>();
+    private HashSet<String> teleport = new HashSet<>();
 
     @EventHandler
+    public void onTeleport(EntityTeleportEvent event){
+        if(event.getEntity() instanceof Player && !event.isCancelled()){
+            teleport.add(event.getEntity().getName());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
         String msg = event.getMessage();
@@ -61,17 +71,23 @@ public class EventListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (AntiAutoAim.containsKey(player.getName())) {
-            AntiAutoAim.get(player.getName()).move(player);
-        } else {
-            AntiAutoAim.put(player.getName(), new AntiAutoAim(event.getPlayer()));
+        if (AntiCheatAPI.getInstance().getMasterConfig().getAntiAutoAim()) {
+            if (AntiAutoAim.containsKey(player.getName())) {
+                AntiAutoAim.get(player.getName()).move(player);
+            } else {
+                AntiAutoAim.put(player.getName(), new AntiAutoAim(event.getPlayer()));
+            }
         }
         if (AntiCheatAPI.getInstance().getMasterConfig().getAntiSpeed()) {
             AntiSpeed antiSpeed = new AntiSpeed(player);
             if (antiSpeed.isCheat()) {
-                AntiCheatAPI.getInstance().addRecord(player, antiSpeed.getCheatType());
-                player.sendMessage(TextFormat.RED + "We detected that you used to accelerate. Perhaps this is a misjudgment.");
-                event.setCancelled();
+                if(!teleport.contains(player.getName())) {
+                    AntiCheatAPI.getInstance().addRecord(player, antiSpeed.getCheatType());
+                    player.sendMessage(TextFormat.RED + "We detected that you used to accelerate. Perhaps this is a misjudgment.");
+                    event.setCancelled();
+                }else{
+                    teleport.remove(player.getName());
+                }
             }
         }
         if (AntiCheatAPI.getInstance().getMasterConfig().getCheckBB()) {

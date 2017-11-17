@@ -3,7 +3,6 @@ package top.dreamcity.AntiCheat.Cheat.combat;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
-import cn.nukkit.network.protocol.MoveEntityPacket;
 import top.dreamcity.AntiCheat.AntiCheatAPI;
 import top.dreamcity.AntiCheat.Event.CheckCheatEvent;
 

@@ -1,13 +1,18 @@
 package top.dreamcity.AntiCheat;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
+import top.dreamcity.AntiCheat.Cheat.Report;
 import top.dreamcity.AntiCheat.Cheat.chat.CheckChatThread;
 import top.dreamcity.AntiCheat.Cheat.move.AntiSpeedThread;
+import top.dreamcity.AntiCheat.Command.ReportCommand;
 import top.dreamcity.AntiCheat.Config.MasterConfig;
 import top.dreamcity.AntiCheat.Config.PlayerCheatRecord;
 import top.dreamcity.AntiCheat.Event.Listener.EventListener;
+
+import java.util.HashMap;
 
 /**
  * Copyright © 2017 WetABQ&DreamCityAdminGroup All right reserved.
@@ -27,6 +32,8 @@ public class AntiCheat extends PluginBase implements AntiCheatAPI{
     private static AntiCheat instance;
     private static MasterConfig masterConfig;
     private PlayerCheatRecord playerCheatRecord;
+    public static HashMap<String, top.dreamcity.AntiCheat.Cheat.AntiCheat.CheatType> reportPlayer = new HashMap<>();
+    public static HashMap<String, Report> reportThread = new HashMap<>();
 
     public static AntiCheat getInstance(){
         return instance;
@@ -46,6 +53,8 @@ public class AntiCheat extends PluginBase implements AntiCheatAPI{
         initConfig();
 
         initAntiThread();
+
+        Server.getInstance().getCommandMap().register("", new ReportCommand());
 
         this.getServer().getPluginManager().registerEvents(new EventListener(),this);
 

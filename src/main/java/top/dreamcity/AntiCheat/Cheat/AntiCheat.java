@@ -55,5 +55,10 @@ public abstract class AntiCheat {
             return this.typeName;
         }
 
+        @Override
+        public String toString(){
+            return this.getTypeName();
+        }
+
     }
 }
