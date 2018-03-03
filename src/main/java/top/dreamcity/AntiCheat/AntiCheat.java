@@ -8,12 +8,14 @@ import top.dreamcity.AntiCheat.Cheat.Report;
 import top.dreamcity.AntiCheat.Cheat.chat.CheckChatThread;
 import top.dreamcity.AntiCheat.Cheat.move.AntiFlyThread;
 import top.dreamcity.AntiCheat.Cheat.move.AntiSpeedThread;
+import top.dreamcity.AntiCheat.Cheat.move.AntiWaterWalkThread;
 import top.dreamcity.AntiCheat.Command.ReportCommand;
 import top.dreamcity.AntiCheat.Config.MasterConfig;
 import top.dreamcity.AntiCheat.Config.PlayerCheatRecord;
 import top.dreamcity.AntiCheat.Event.Listener.EventListener;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Copyright © 2017 WetABQ&DreamCityAdminGroup All right reserved.
@@ -35,6 +37,7 @@ public class AntiCheat extends PluginBase implements AntiCheatAPI{
     private PlayerCheatRecord playerCheatRecord;
     public static HashMap<String, top.dreamcity.AntiCheat.Cheat.AntiCheat.CheatType> reportPlayer = new HashMap<>();
     public static HashMap<String, Report> reportThread = new HashMap<>();
+    public static HashSet<String> DemoPlayer = new HashSet<>();
 
     public static AntiCheat getInstance(){
         return instance;
@@ -68,9 +71,11 @@ public class AntiCheat extends PluginBase implements AntiCheatAPI{
     }
 
     private void initAntiThread(){
+        //this.getServer().getScheduler().scheduleRepeatingTask(new AntiSpeedThread(this),1);
         new AntiSpeedThread();
         new CheckChatThread();
         new AntiFlyThread();
+        new AntiWaterWalkThread();
     }
 
     private void initConfig(){

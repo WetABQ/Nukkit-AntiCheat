@@ -2,6 +2,7 @@ package top.dreamcity.AntiCheat.Cheat.combat;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import top.dreamcity.AntiCheat.AntiCheatAPI;
 import top.dreamcity.AntiCheat.Event.CheckCheatEvent;
@@ -71,14 +72,14 @@ public class AntiAutoAim extends Combat {
         player.dataPacket(pk3);
         player.dataPacket(pk4);*/
         byte[] skin = image(AntiCheatAPI.getInstance().getMasterConfig().getSkinPath());
-        NPC npc = new NPC(new Position(player.getX(), player.getY(), player.getZ(), player.getLevel()), skin, player);
-        npc.setNameTag("");
-        npc.setScale(0.01F);
+        NPC npc = new NPC(new Position(player.getX(), player.getY()+3, player.getZ(), player.getLevel()), skin, player);
+        npc.setNameTag("AntiCheat");
+        npc.setScale(0.0001F);
         this.npc = npc;
     }
 
     public void move(Player player){
-        npc.teleport(new Position(player.x,player.y+1,player.z,player.level));
+        npc.teleport(new Location(player.x,player.y,player.z,player.yaw,player.pitch));
     }
 
     private static byte[] image(String path){

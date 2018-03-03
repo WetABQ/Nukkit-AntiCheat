@@ -29,7 +29,6 @@ public class NPC extends EntityHuman{
         this.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_CAN_SHOW_NAMETAG, false);
         this.setHealth(999);
         this.setMaxHealth(999);
-        this.setMovementSpeed(0);
         if(!this.hasSpawned.containsValue(player)){
             this.spawnTo(player);
         }
@@ -52,6 +51,6 @@ public class NPC extends EntityHuman{
                         .putByteArray("Data", skin)
                         .putString("ModelId","Standard_Steve")
                 )
-                .putString("NameTag","xxx");
+                .putString("NameTag","AntiCheat");
     }
 }

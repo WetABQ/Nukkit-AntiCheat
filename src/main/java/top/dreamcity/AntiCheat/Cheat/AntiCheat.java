@@ -34,7 +34,8 @@ public abstract class AntiCheat {
         FAST_CHAT("fastchat"),
         SENSITIVE_WORDS("sensitivewords"),
         KILL_AURA("killaura"),
-        AUTO_AIM("autoaim");
+        AUTO_AIM("autoaim"),
+        Reach("reach");
 
         private String typeName;
 

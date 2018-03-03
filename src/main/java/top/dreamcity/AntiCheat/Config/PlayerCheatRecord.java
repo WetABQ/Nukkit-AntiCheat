@@ -31,12 +31,12 @@ public class PlayerCheatRecord {
     }
 
     public void addRecord(Player player, top.dreamcity.AntiCheat.Cheat.AntiCheat.CheatType cheatType){
-        int id = config.size()+1;
+        /*int id = config.size()+1;
         Date date=new Date();
         DateFormat format=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String time = format.format(date);
         config.put("#"+id+"|Time:"+time,"Player "+player.getName()+"("+player.getLocation().toString()+")[HP:"+player.getHealth()+"/"+player.getMaxHealth()+"] try cheating(Type:"+cheatType.getTypeName()+").");
-        save();
+        save();*/
     }
 
     private void save(){

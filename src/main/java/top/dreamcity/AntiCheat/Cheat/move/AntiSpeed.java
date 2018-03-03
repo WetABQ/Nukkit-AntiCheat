@@ -32,10 +32,10 @@ public class AntiSpeed extends Move {
 
     @Override
     public boolean isCheat() {
-        CheckCheatEvent event = new CheckCheatEvent(player, getCheatType());
-        Server.getInstance().getPluginManager().callEvent(event);
-        if (player.getGamemode() != 0) event.setCancelled();
-        if (event.isCancelled()) return false;
+        //CheckCheatEvent event = new CheckCheatEvent(player, getCheatType());
+        //Server.getInstance().getPluginManager().callEvent(event);
+        if (player.getGamemode() != 0) return false;
+        //if (event.isCancelled()) return false;
         Boolean flag = false;
         MasterConfig config = AntiCheatAPI.getInstance().getMasterConfig();
         if (playerMoveSpeed >= config.getMaxMoveSpeed()) {
@@ -47,7 +47,7 @@ public class AntiSpeed extends Move {
                 }else{
                     flag = true;
                 }
-            } else if (playerMoveSpeed >= AntiCheatAPI.getInstance().getMasterConfig().getMaxMoveSpeed() + 1.5) {
+            } else {
                 if(config.getAntiSpeedPingCheck()) {
                     if (player.getPing() < config.getPingNoCheckValue()) {
                         flag = true;
@@ -60,8 +60,9 @@ public class AntiSpeed extends Move {
         if (flag) {
             PlayerCheating event2 = new PlayerCheating(player, getCheatType());
             Server.getInstance().getPluginManager().callEvent(event2);
-            return !event.isCancelled();
+            return !event2.isCancelled();
         }
         return false;
     }
+
 }

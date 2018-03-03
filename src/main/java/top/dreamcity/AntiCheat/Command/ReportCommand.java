@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
+import cn.nukkit.item.Item;
 import cn.nukkit.utils.TextFormat;
 import top.dreamcity.AntiCheat.AntiCheatAPI;
 import top.dreamcity.AntiCheat.Cheat.AntiCheat;
@@ -90,6 +91,7 @@ public class ReportCommand extends Command{
             AntiCheatAPI.getInstance().reportPlayer.put(p.getName(), cheatType);
             Server.getInstance().getLogger().warning("Player "+sender.getName()+" report "+p.getName()+" cheat type:"+cheatType.getTypeName());
             sender.sendMessage(TextFormat.GREEN + "You successfully reported the player " + p.getName() + " cheat type " + cheatType.getTypeName());
+            addReportThread(p,cheatType);
         } else {
             sender.sendMessage(TextFormat.RED + "You must run in game!");
         }

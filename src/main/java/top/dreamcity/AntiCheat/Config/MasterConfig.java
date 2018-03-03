@@ -96,7 +96,7 @@ public class MasterConfig {
         antiKillAura = true;
         antiAutoAim = true;
         antiSpeedPingCheck = true;
-        maxMoveSpeed = 6F;
+        maxMoveSpeed = 10F;
         pingNoCheckValue = 25;
         inAirTimeCheck = 5;
         chatSec = 2;
