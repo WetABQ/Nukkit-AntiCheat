@@ -26,16 +26,16 @@ import java.util.Map;
 public class Study {
     public final static String API_ADDRESS_SPEED = "http://14.29.54.37:88/AntiCheat/SpeedCheat.php";
 
-    public static void SpeedStudy(double maxSpeed,double avgSpeed,boolean isCheat){
-        sendGet(API_ADDRESS_SPEED,"maxspeed="+maxSpeed+"&averageSpeed="+avgSpeed+"&isCheating="+isCheat);
+    public static void SpeedStudy(double maxSpeed, double avgSpeed, boolean isCheat) {
+        sendGet(API_ADDRESS_SPEED, "maxspeed=" + maxSpeed + "&averageSpeed=" + avgSpeed + "&isCheating=" + isCheat);
     }
 
-    public static boolean SpeedPredict(double maxSpeed,double avgSpeed){
+    public static boolean SpeedPredict(double maxSpeed, double avgSpeed) {
         try {
             Gson gson = new Gson();
             Map<?, ?> json = gson.fromJson(sendGet(API_ADDRESS_SPEED, "maxspeed=" + maxSpeed + "&averageSpeed=" + avgSpeed), Map.class);
             return json.get("isCheating").toString().equals("true");
-        }catch (Exception e){
+        } catch (Exception e) {
             Server.getInstance().getLogger().error("AntiCheat-MLSystem >> Error to predict speed cheat.");
             return false;
         }
@@ -62,8 +62,7 @@ public class Study {
         } catch (Exception e) {
             System.out.println("Send get error" + e);
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 if (in != null) {
                     in.close();
@@ -74,4 +73,5 @@ public class Study {
         }
         return result;
     }
+
 }

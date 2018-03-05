@@ -24,30 +24,28 @@ import java.math.BigDecimal;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class ReportFlyThread extends Report implements Runnable{
-    private Thread thread;
+public class ReportFlyThread extends Report {
 
-    public ReportFlyThread(Player player){
+    public ReportFlyThread(Player player) {
         super(player);
-        this.thread = new Thread(this);
-        thread.start();
+        Server.getInstance().getScheduler().scheduleAsyncTask(AntiCheatAPI.getInstance(), this);
     }
 
     @Override
     public void run() {
         try {
             boolean flag = false;
-            for (int f = 0;f < 60;f++) {
+            for (int f = 0; f < 60; f++) {
                 if (player.isOnline() && !player.isOp() && player.getGamemode() == 0) {
-                    if(player.y != (int)player.y) {
+                    if (player.y != (int) player.y) {
                         double skidY = player.y;
-                        thread.sleep(1000);
-                        if(player.y != (int)player.y) {
+                        Thread.sleep(1000);
+                        if (player.y != (int) player.y) {
                             BigDecimal b1 = new BigDecimal(Double.toString(player.y));
                             BigDecimal b2 = new BigDecimal(Double.toString(skidY));
                             double skidDY = b1.subtract(b2).doubleValue();
                             if (skidDY <= 1 && skidDY >= 0 && !EventListener.AntiTower.containsKey(player.getName())) {
-                                if(player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0 &&
+                                if (player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z - 1) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z + 1) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z) == 0 &&
@@ -68,26 +66,26 @@ public class ReportFlyThread extends Report implements Runnable{
                     if (player.isOnGround()) {
                         //System.out.println("b");
                         boolean b = false;
-                        if(player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0 && player.isSneaking()){
-                            if( player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0 &&
+                        if (player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0 && player.isSneaking()) {
+                            if (player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0 &&
                                     player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z + 1) == 0 &&
                                     player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z - 1) == 0 &&
                                     player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z) == 0 &&
                                     player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z) == 0 &&
                                     player.getLevel().getBlockIdAt((int) player.x, (int) player.y, (int) player.z) == 0 &&
-                                    player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z -1) == 0 &&
+                                    player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z - 1) == 0 &&
                                     player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z + 1) == 0 &&
                                     player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z - 1) == 0 &&
-                                    player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z + 1) == 0 && AntiFlyPlayerThread.ifPlayerinSky(player)){
+                                    player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z + 1) == 0 && AntiFlyPlayerThread.ifPlayerinSky(player)) {
                                 b = true;
                             }
-                        }else if(!player.isSneaking() && player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0){
+                        } else if (!player.isSneaking() && player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0) {
                             b = true;
                         }
                         if (b) {
                             //System.out.println("c");
                             double y = player.y;
-                            thread.sleep(3000);
+                            Thread.sleep(3000);
                             if (y <= player.y && player.isOnGround() && !EventListener.AntiTower.containsKey(player.getName())) {
                                 while (player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z + 1) == 0 &&
@@ -95,18 +93,18 @@ public class ReportFlyThread extends Report implements Runnable{
                                         player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x, (int) player.y, (int) player.z) == 0 &&
-                                        player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z -1) == 0 &&
+                                        player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z - 1) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z + 1) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z - 1) == 0 &&
                                         player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z + 1) == 0 && AntiFlyPlayerThread.ifPlayerinSky(player)) {
                                     player.move(0, -1, 0);
-                                    player.getAdventureSettings().set(AdventureSettings.Type.FLYING,false);
+                                    player.getAdventureSettings().set(AdventureSettings.Type.FLYING, false);
                                     //player.getAdventureSettings().setFlying(false);
                                     //player.getAdventureSettings().setCanFly(false);
                                     player.getAdventureSettings().update();
                                     y = player.y;
-                                    thread.sleep(1000);
-                                    if(player.y >= y && player.isOnGround() && !EventListener.AntiTower.containsKey(player.getName())) {
+                                    Thread.sleep(1000);
+                                    if (player.y >= y && player.isOnGround() && !EventListener.AntiTower.containsKey(player.getName())) {
                                         int groundY = 1;
                                         while (player.getLevel().getBlockIdAt((int) player.x, (int) player.y - groundY, (int) player.z) == 0) {
                                             groundY++;
@@ -118,7 +116,7 @@ public class ReportFlyThread extends Report implements Runnable{
                                                 player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z) == 0 &&
                                                 player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z) == 0 &&
                                                 player.getLevel().getBlockIdAt((int) player.x, (int) player.y, (int) player.z) == 0 &&
-                                                player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z -1) == 0 &&
+                                                player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z - 1) == 0 &&
                                                 player.getLevel().getBlockIdAt((int) player.x - 1, (int) player.y - 1, (int) player.z + 1) == 0 &&
                                                 player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z - 1) == 0 &&
                                                 player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z + 1) == 0 && player.isOnline() && AntiFlyPlayerThread.ifPlayerinSky(player)) {
@@ -126,9 +124,9 @@ public class ReportFlyThread extends Report implements Runnable{
                                         }
                                     }
                                 }
-                               // System.out.println("d");
+                                // System.out.println("d");
                             } else {
-                               // System.out.println("e");
+                                // System.out.println("e");
                                 y = player.y;
                                 if (player.move(0, -3, 0)) {
                                     System.out.println("f" + y + "|" + player.y);
@@ -145,10 +143,10 @@ public class ReportFlyThread extends Report implements Runnable{
                     } else {
                         //System.out.println("i");
                         double y = player.y;
-                        thread.sleep(3000);
+                        Thread.sleep(3000);
 
                         //Player Jump : Normal[1.25] Jump_Effect_Level1[1+15/16] Jump_Effect_Level2[2.5]
-                        if ((player.y- y)> -0.000000000000001 && (player.y- y) < 0.000000000000001 && !player.isOnGround() && !EventListener.AntiTower.containsKey(player.getName())) {
+                        if ((player.y - y) > -0.000000000000001 && (player.y - y) < 0.000000000000001 && !player.isOnGround() && !EventListener.AntiTower.containsKey(player.getName())) {
                             System.out.println("j");
                             flag = true;
                         }
@@ -172,15 +170,16 @@ public class ReportFlyThread extends Report implements Runnable{
                     }
                 }
                 //System.out.println("shabi!!!");
-                thread.sleep(1000);
+                Thread.sleep(1000);
             }
-            if(!flag){
-                Server.getInstance().getLogger().notice("AntiCheat System Check Player "+ player.getName()  +" *NO CHEAT*");
+            if (!flag) {
+                Server.getInstance().getLogger().notice("AntiCheat System Check Player " + player.getName() + " *NO CHEAT*");
             }
             AntiCheatAPI.getInstance().reportPlayer.remove(player.getName());
             AntiCheatAPI.getInstance().reportThread.remove(player.getName());
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
 }

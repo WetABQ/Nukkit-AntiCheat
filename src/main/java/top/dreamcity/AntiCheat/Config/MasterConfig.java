@@ -57,15 +57,14 @@ public class MasterConfig {
     private String SkinPath;
 
 
-
-    public MasterConfig(ConfigSection configSection){
+    public MasterConfig(ConfigSection configSection) {
         config = configSection;
         isEmpty = config.isEmpty();
         init();
     }
 
-    public void init(){
-        if(!isEmpty){
+    public void init() {
+        if (!isEmpty) {
             antiSpeed = config.getBoolean("antiSpeed");
             checkBB = config.getBoolean("checkBB");
             antiFly = config.getBoolean("antiFly ");
@@ -81,12 +80,12 @@ public class MasterConfig {
             checkKillAuraCPS = config.getInt("checkKillAuraCPS");
             SensitiveWords = (ArrayList) config.get("SensitiveWords");
             SkinPath = config.getString("RobotSkinPath");
-        }else{
+        } else {
             spawnDefaultConfig();
         }
     }
 
-    public void spawnDefaultConfig(){
+    public void spawnDefaultConfig() {
         AntiCheat.getInstance().getLogger().notice("Start spawning default config.");
         antiSpeed = true;
         checkBB = true;
@@ -104,11 +103,11 @@ public class MasterConfig {
         SensitiveWords = new ArrayList<>();
         SensitiveWords.add("fuck");
         SensitiveWords.add("shit");
-        SkinPath = AntiCheatAPI.getInstance().getDataFolder()+"/Steve.png";
+        SkinPath = AntiCheatAPI.getInstance().getDataFolder() + "/Steve.png";
         save();
     }
 
-    public void save(){
+    public void save() {
         try {
             config.put("antiSpeed", antiSpeed);
             config.put("antiSpeedPingCheck", antiSpeedPingCheck);
@@ -128,13 +127,13 @@ public class MasterConfig {
             Config c = new Config(AntiCheat.getInstance().getDataFolder() + "/config.yml", Config.YAML);
             c.setAll(config);
             c.save();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             spawnDefaultConfig();
             save();
         }
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return isEmpty;
     }
 
@@ -197,4 +196,5 @@ public class MasterConfig {
     public String getSkinPath() {
         return SkinPath;
     }
+
 }

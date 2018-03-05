@@ -2,6 +2,8 @@ package top.dreamcity.AntiCheat.Cheat.move;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.scheduler.AsyncTask;
+import top.dreamcity.AntiCheat.AntiCheatAPI;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,28 +22,27 @@ import java.util.UUID;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class AntiWaterWalkThread implements Runnable {
-    private Thread thread;
+public class AntiWaterWalkThread extends AsyncTask {
 
     public AntiWaterWalkThread() {
-        thread = new Thread(this);
-        thread.start();
+        Server.getInstance().getScheduler().scheduleAsyncTask(AntiCheatAPI.getInstance(), this);
     }
 
-    public void run() {
+    public void onRun() {
         while (true) {
             try {
-                Map<UUID,Player> players = new HashMap<>(Server.getInstance().getOnlinePlayers());
+                Map<UUID, Player> players = new HashMap<>(Server.getInstance().getOnlinePlayers());
                 for (Player player : players.values()) {
                     if (player.isOnline() && !player.isOp() && player.getGamemode() == 0) {
                         new AntiWaterWalkPlayerThread(player, player.isOnGround());
                     }
                 }
-                thread.sleep(7500);
+                Thread.sleep(7500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
     }
+
 }

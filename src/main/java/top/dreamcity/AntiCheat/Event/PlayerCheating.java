@@ -21,7 +21,7 @@ import top.dreamcity.AntiCheat.Cheat.AntiCheat;
  */
 public class PlayerCheating extends PlayerEvent implements Cancellable {
 
-    AntiCheat.CheatType cheatType;
+    public AntiCheat.CheatType cheatType;
 
     private static final HandlerList handlers = new HandlerList();
 
@@ -29,7 +29,7 @@ public class PlayerCheating extends PlayerEvent implements Cancellable {
         return handlers;
     }
 
-    public PlayerCheating(Player player, AntiCheat.CheatType cheatType){
+    public PlayerCheating(Player player, AntiCheat.CheatType cheatType) {
         this.player = player;
         this.cheatType = cheatType;
     }

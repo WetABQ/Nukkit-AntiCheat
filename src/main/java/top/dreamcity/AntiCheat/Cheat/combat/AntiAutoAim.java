@@ -33,6 +33,7 @@ public class AntiAutoAim extends Combat {
         super(player);
         addDummy();
     }
+
     private NPC npc;
 
     @Override
@@ -72,17 +73,17 @@ public class AntiAutoAim extends Combat {
         player.dataPacket(pk3);
         player.dataPacket(pk4);*/
         byte[] skin = image(AntiCheatAPI.getInstance().getMasterConfig().getSkinPath());
-        NPC npc = new NPC(new Position(player.getX(), player.getY()+3, player.getZ(), player.getLevel()), skin, player);
+        NPC npc = new NPC(new Position(player.getX(), player.getY() + 3, player.getZ(), player.getLevel()), skin, player);
         npc.setNameTag("AntiCheat");
         npc.setScale(0.0001F);
         this.npc = npc;
     }
 
-    public void move(Player player){
-        npc.teleport(new Location(player.x,player.y,player.z,player.yaw,player.pitch));
+    public void move(Player player) {
+        npc.teleport(new Location(player.x, player.y, player.z, player.yaw, player.pitch));
     }
 
-    private static byte[] image(String path){
+    private static byte[] image(String path) {
         File file = new File(path);
         BufferedImage image;
         try {
@@ -96,8 +97,8 @@ public class AntiAutoAim extends Combat {
     private static byte[] parseBufferedImage(BufferedImage image) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        for(int y = 0; y < image.getHeight(); ++y) {
-            for(int x = 0; x < image.getWidth(); ++x) {
+        for (int y = 0; y < image.getHeight(); ++y) {
+            for (int x = 0; x < image.getWidth(); ++x) {
                 Color color = new Color(image.getRGB(x, y), true);
                 outputStream.write(color.getRed());
                 outputStream.write(color.getGreen());
@@ -109,4 +110,5 @@ public class AntiAutoAim extends Combat {
         image.flush();
         return outputStream.toByteArray();
     }
+
 }

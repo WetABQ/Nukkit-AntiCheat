@@ -29,4 +29,5 @@ public abstract class Move extends AntiCheat {
     public float getPlayerMoveSpeed() {
         return playerMoveSpeed;
     }
+
 }

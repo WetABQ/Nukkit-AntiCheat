@@ -27,9 +27,9 @@ import java.util.HashMap;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class ReportCommand extends Command{
+public class ReportCommand extends Command {
 
-    public ReportCommand(){
+    public ReportCommand() {
         super("report");
         this.setDescription("Report to the system to cheat players!");
         this.setAliases(new String[]{
@@ -84,14 +84,14 @@ public class ReportCommand extends Command{
                     sender.sendMessage(TextFormat.RED + "Unknown type! For example: fly f 飞行 s sp speed 速度 加速");
                     return true;
             }
-            if(AntiCheatAPI.getInstance().reportPlayer.containsKey(p.getName())){
+            if (AntiCheatAPI.getInstance().reportPlayer.containsKey(p.getName())) {
                 sender.sendMessage(TextFormat.GREEN + "Please do not repeat the report");
                 return true;
             }
             AntiCheatAPI.getInstance().reportPlayer.put(p.getName(), cheatType);
-            Server.getInstance().getLogger().warning("Player "+sender.getName()+" report "+p.getName()+" cheat type:"+cheatType.getTypeName());
+            Server.getInstance().getLogger().warning("Player " + sender.getName() + " report " + p.getName() + " cheat type:" + cheatType.getTypeName());
             sender.sendMessage(TextFormat.GREEN + "You successfully reported the player " + p.getName() + " cheat type " + cheatType.getTypeName());
-            addReportThread(p,cheatType);
+            addReportThread(p, cheatType);
         } else {
             sender.sendMessage(TextFormat.RED + "You must run in game!");
         }
@@ -99,17 +99,17 @@ public class ReportCommand extends Command{
     }
 
 
-    private void addReportThread(Player player, AntiCheat.CheatType type){
-        switch(type.getTypeName()){
+    private void addReportThread(Player player, AntiCheat.CheatType type) {
+        switch (type.getTypeName()) {
             case "fly":
-                AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportFlyThread(player));
+                AntiCheatAPI.getInstance().reportThread.put(player.getName(), new ReportFlyThread(player));
                 break;
             case "speed":
-                AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportSpeedThread(player));
+                AntiCheatAPI.getInstance().reportThread.put(player.getName(), new ReportSpeedThread(player));
                 break;
             default:
-                AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportFlyThread(player));
-                AntiCheatAPI.getInstance().reportThread.put(player.getName(),new ReportSpeedThread(player));
+                AntiCheatAPI.getInstance().reportThread.put(player.getName(), new ReportFlyThread(player));
+                AntiCheatAPI.getInstance().reportThread.put(player.getName(), new ReportSpeedThread(player));
                 break;
         }
     }

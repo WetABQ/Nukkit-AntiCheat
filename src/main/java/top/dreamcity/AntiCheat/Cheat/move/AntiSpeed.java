@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import top.dreamcity.AntiCheat.AntiCheatAPI;
 import top.dreamcity.AntiCheat.Config.MasterConfig;
-import top.dreamcity.AntiCheat.Event.CheckCheatEvent;
 import top.dreamcity.AntiCheat.Event.PlayerCheating;
 
 /**
@@ -40,19 +39,19 @@ public class AntiSpeed extends Move {
         MasterConfig config = AntiCheatAPI.getInstance().getMasterConfig();
         if (playerMoveSpeed >= config.getMaxMoveSpeed()) {
             if (!player.hasEffect(1)) {
-                if(config.getAntiSpeedPingCheck()) {
+                if (config.getAntiSpeedPingCheck()) {
                     if (player.getPing() < config.getPingNoCheckValue()) {
                         flag = true;
                     }
-                }else{
+                } else {
                     flag = true;
                 }
             } else {
-                if(config.getAntiSpeedPingCheck()) {
+                if (config.getAntiSpeedPingCheck()) {
                     if (player.getPing() < config.getPingNoCheckValue()) {
                         flag = true;
                     }
-                }else{
+                } else {
                     flag = true;
                 }
             }

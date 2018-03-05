@@ -43,4 +43,5 @@ public class CheckChat extends Chat {
         }
         return false;
     }
+
 }

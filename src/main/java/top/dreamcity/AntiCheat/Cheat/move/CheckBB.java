@@ -53,4 +53,5 @@ public class CheckBB extends Move {
         }
         return false;
     }
+
 }

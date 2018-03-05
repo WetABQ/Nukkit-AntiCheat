@@ -1,6 +1,7 @@
 package top.dreamcity.AntiCheat.Cheat;
 
 import cn.nukkit.Player;
+import cn.nukkit.scheduler.AsyncTask;
 
 /**
  * Copyright © 2016 WetABQ&DreamCityAdminGroup All right reserved.
@@ -15,10 +16,14 @@ import cn.nukkit.Player;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class Report {
+public class Report extends AsyncTask {
     protected Player player;
 
-    public Report(Player player){
+    public Report(Player player) {
         this.player = player;
+    }
+
+    public void onRun() {
+
     }
 }

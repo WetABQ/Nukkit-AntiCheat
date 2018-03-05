@@ -29,4 +29,5 @@ public class AntiFly extends Move {
     public boolean isCheat() {
         return false;
     }
+
 }

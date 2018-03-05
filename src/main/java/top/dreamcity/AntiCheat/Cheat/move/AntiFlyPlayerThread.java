@@ -5,13 +5,10 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.math.Vector3;
-import cn.nukkit.potion.Effect;
+import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.utils.TextFormat;
-import io.netty.handler.codec.http.websocketx.extensions.compression.PerMessageDeflateServerExtensionHandshaker;
+import top.dreamcity.AntiCheat.AntiCheatAPI;
 import top.dreamcity.AntiCheat.Event.Listener.EventListener;
-
-import java.awt.*;
-import java.math.BigDecimal;
 
 
 /**
@@ -27,37 +24,35 @@ import java.math.BigDecimal;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class AntiFlyPlayerThread implements Runnable {
-    private Thread thread;
+public class AntiFlyPlayerThread extends AsyncTask {
     private Player player;
     private int fly;
 
     public AntiFlyPlayerThread(Player player) {
-        thread = new Thread(this);
         this.player = player;
-        thread.start();
+        Server.getInstance().getScheduler().scheduleAsyncTask(AntiCheatAPI.getInstance(), this);
     }
 
     @Override
-    public void run() {
+    public void onRun() {
         while (player.isOnline() && player != null) {
-            if(!player.isOp() && player.getGamemode() == 0) {
+            if (!player.isOp() && player.getGamemode() == 0) {
                 try {
-                    if(player.getInAirTicks() >= 100){
+                    if (player.getInAirTicks() >= 100) {
                         player.sendMessage(TextFormat.colorize("&cSuspect that you are using cheating on a flight to stop your behavior &eCheck: Core"));
                     }
-                    if(player.getInAirTicks() >= 20*12){
-                        Server.getInstance().broadcastMessage(TextFormat.colorize("&dPlayer &b"+player.getName()+" &esuspected cheating was kicked out of AntiCheat!"));
-                        player.kick(TextFormat.colorize("&cYou suspect that you are using cheating on a flight to stop your behavior\n&eIf the miscarriage of justice please tell the following information to the administrator\nCheck: Core FlyCount: "+fly+"Speed:"+AntiSpeedThread.getMove(player.getName()))+" onGround:"+player.isOnGround()+" inAirTick:"+player.getInAirTicks());
+                    if (player.getInAirTicks() >= 20 * 12) {
+                        Server.getInstance().broadcastMessage(TextFormat.colorize("&dPlayer &b" + player.getName() + " &esuspected cheating was kicked out of AntiCheat!"));
+                        player.kick(TextFormat.colorize("&cYou suspect that you are using cheating on a flight to stop your behavior\n&eIf the miscarriage of justice please tell the following information to the administrator\nCheck: Core FlyCount: " + fly + "Speed:" + AntiSpeedThread.getMove(player.getName())) + " onGround:" + player.isOnGround() + " inAirTick:" + player.getInAirTicks());
                     }
-                    if(player.getInAirTicks() >= 20) {
-                        if (AntiSpeedThread.getMove(player.getName()) > 8.5D){
-                            Server.getInstance().broadcastMessage(TextFormat.colorize("&dPlayer &b"+player.getName()+" &esuspected cheating was kicked out of AntiCheat!"));
-                            player.kick(TextFormat.colorize("&cYou suspect that you are using cheating on a flight to stop your behavior\n&eIf the miscarriage of justice please tell the following information to the administrator\nCheck: AntiCheat[JetPacket] FlyCount: "+fly+"Speed:"+AntiSpeedThread.getMove(player.getName()))+" onGround:"+player.isOnGround()+" inAirTick:"+player.getInAirTicks());
+                    if (player.getInAirTicks() >= 20) {
+                        if (AntiSpeedThread.getMove(player.getName()) > 8.5D) {
+                            Server.getInstance().broadcastMessage(TextFormat.colorize("&dPlayer &b" + player.getName() + " &esuspected cheating was kicked out of AntiCheat!"));
+                            player.kick(TextFormat.colorize("&cYou suspect that you are using cheating on a flight to stop your behavior\n&eIf the miscarriage of justice please tell the following information to the administrator\nCheck: AntiCheat[JetPacket] FlyCount: " + fly + "Speed:" + AntiSpeedThread.getMove(player.getName())) + " onGround:" + player.isOnGround() + " inAirTick:" + player.getInAirTicks());
                         }
                     }
                     double y = player.y;
-                    thread.sleep(3000);
+                    Thread.sleep(3000);
                     if (player.y >= y && player.isOnGround() && !EventListener.AntiTower.containsKey(player.getName())) {
                         if (player.getLevel().getBlockIdAt((int) player.x, (int) player.y - 1, (int) player.z) == 0) {
                             //System.out.println("a");
@@ -74,12 +69,12 @@ public class AntiFlyPlayerThread implements Runnable {
                                     player.getLevel().getBlockIdAt((int) player.x + 1, (int) player.y - 1, (int) player.z + 1) == 0 && player.isOnline() && i < 50 && ifPlayerinSky(player) && !player.isSneaking(); i++) {
                                 System.out.println("cnm " + player.getName());
                                 player.setMotion(new Vector3(0, -2, 0));
-                                player.getAdventureSettings().set(AdventureSettings.Type.FLYING,false);
+                                player.getAdventureSettings().set(AdventureSettings.Type.FLYING, false);
                                 //player.getAdventureSettings().setFlying(false);
                                 //player.getAdventureSettings().setCanFly(false);
                                 player.getAdventureSettings().update();
                                 y = player.y;
-                                thread.sleep(300);
+                                Thread.sleep(300);
                                 if (player.y >= y && player.isOnGround() && !EventListener.AntiTower.containsKey(player.getName())) {
                                     int groundY = 1;
                                     while (player.getLevel().getBlockIdAt((int) player.x, (int) player.y - groundY, (int) player.z) == 0 && player.isOnline()) {
@@ -106,9 +101,9 @@ public class AntiFlyPlayerThread implements Runnable {
                             }
                         }
                     }
-                    if(fly >= 3){
-                        Server.getInstance().broadcastMessage(TextFormat.colorize("&dPlayer &b"+player.getName()+" &esuspected cheating was kicked out of AntiCheat!"));
-                        player.kick(TextFormat.colorize("&cYou suspect that you are using cheating on a flight to stop your behavior\n&eIf the miscarriage of justice please tell the following information to the administrator\nCheck: AntiCheat[FlyMore] FlyCount: "+fly+"Speed:"+AntiSpeedThread.getMove(player.getName()))+" onGround:"+player.isOnGround()+" inAirTick:"+player.getInAirTicks());
+                    if (fly >= 3) {
+                        Server.getInstance().broadcastMessage(TextFormat.colorize("&dPlayer &b" + player.getName() + " &esuspected cheating was kicked out of AntiCheat!"));
+                        player.kick(TextFormat.colorize("&cYou suspect that you are using cheating on a flight to stop your behavior\n&eIf the miscarriage of justice please tell the following information to the administrator\nCheck: AntiCheat[FlyMore] FlyCount: " + fly + "Speed:" + AntiSpeedThread.getMove(player.getName())) + " onGround:" + player.isOnGround() + " inAirTick:" + player.getInAirTicks());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -117,9 +112,9 @@ public class AntiFlyPlayerThread implements Runnable {
         }
     }
 
-    public static boolean ifPlayerinSky(Player player){
-        for(Block block : player.getBlocksAround()){
-            if(block.getId() != 0){
+    public static boolean ifPlayerinSky(Player player) {
+        for (Block block : player.getBlocksAround()) {
+            if (block.getId() != 0) {
                 return false;
             }
         }

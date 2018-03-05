@@ -2,6 +2,9 @@ package top.dreamcity.AntiCheat.Cheat.move;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.scheduler.AsyncTask;
+import top.dreamcity.AntiCheat.AntiCheatAPI;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,36 +23,34 @@ import java.util.UUID;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class AntiFlyThread implements Runnable {
+public class AntiFlyThread extends AsyncTask {
 
 
-    private Thread thread;
     private HashSet<String> playerThread = new HashSet<>();
     //private HashMap<String,Integer> Flycount = new HashMap<>();
 
     public AntiFlyThread() {
-        thread = new Thread(this);
-        thread.start();
+        Server.getInstance().getScheduler().scheduleAsyncTask(AntiCheatAPI.getInstance(), this);
     }
 
-    public void run() {
+    public void onRun() {
         while (true) {
             try {
-                Map<UUID,Player> players = new HashMap<>(Server.getInstance().getOnlinePlayers());
+                Map<UUID, Player> players = new HashMap<>(Server.getInstance().getOnlinePlayers());
                 for (Player player : players.values()) {
                     if (player.isOnline() && !player.isOp() && player.getGamemode() == 0) {
-                        if(!playerThread.contains(player.getName())) {
+                        if (!playerThread.contains(player.getName())) {
                             new AntiFlyPlayerThread(player);
                             playerThread.add(player.getName());
                         }
                     }
                 }
-                for (String name: playerThread){
-                    if(Server.getInstance().getPlayerExact(name) == null){
+                for (String name : playerThread) {
+                    if (Server.getInstance().getPlayerExact(name) == null) {
                         playerThread.remove(name);
                     }
                 }
-                thread.sleep(1000);
+                Thread.sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }

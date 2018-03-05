@@ -20,24 +20,24 @@ import top.dreamcity.AntiCheat.Event.PlayerCheating;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class Reach extends Combat{
+public class Reach extends Combat {
     public Block block = null;
     public Entity entity = null;
 
 
-    public Reach(Player player,Block block) {
+    public Reach(Player player, Block block) {
         super(player);
         this.block = block;
     }
 
-    public Reach(Player player,Entity entity) {
+    public Reach(Player player, Entity entity) {
         super(player);
         this.entity = entity;
     }
 
     @Override
     public CheatType getCheatType() {
-        return CheatType.Reach;
+        return CheatType.REACH;
     }
 
 
@@ -49,22 +49,23 @@ public class Reach extends Combat{
 
         if (event.isCancelled()) return false;
         boolean flag = false;
-        if(entity != null){
-            if(entity.distance(player) >= 4){
+        if (entity != null) {
+            if (entity.distance(player) >= 4) {
                 flag = true;
             }
-        }else if(block != null){
-            if(block.distance(player) >= 6){
+        } else if (block != null) {
+            if (block.distance(player) >= 6) {
                 flag = true;
             }
         }
-        if(flag) {
+        if (flag) {
             PlayerCheating event2 = new PlayerCheating(player, getCheatType());
             Server.getInstance().getPluginManager().callEvent(event2);
             return !event2.isCancelled();
         }
         return false;
     }
+
 }
 
 

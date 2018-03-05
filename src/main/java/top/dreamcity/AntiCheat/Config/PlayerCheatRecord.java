@@ -26,20 +26,20 @@ public class PlayerCheatRecord {
 
     private ConfigSection config;
 
-    public PlayerCheatRecord(ConfigSection configSection){
+    public PlayerCheatRecord(ConfigSection configSection) {
         config = configSection;
     }
 
-    public void addRecord(Player player, top.dreamcity.AntiCheat.Cheat.AntiCheat.CheatType cheatType){
-        /*int id = config.size()+1;
-        Date date=new Date();
-        DateFormat format=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    public void addRecord(Player player, top.dreamcity.AntiCheat.Cheat.AntiCheat.CheatType cheatType) {
+        int id = config.size() + 1;
+        Date date = new Date();
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String time = format.format(date);
-        config.put("#"+id+"|Time:"+time,"Player "+player.getName()+"("+player.getLocation().toString()+")[HP:"+player.getHealth()+"/"+player.getMaxHealth()+"] try cheating(Type:"+cheatType.getTypeName()+").");
-        save();*/
+        config.put("#" + id + "|Time:" + time, "Player " + player.getName() + "(" + player.getLocation().toString() + ")[HP:" + player.getHealth() + "/" + player.getMaxHealth() + "] try cheating(Type:" + cheatType.getTypeName() + ").");
+        save();
     }
 
-    private void save(){
+    private void save() {
         Config c = new Config(AntiCheat.getInstance().getDataFolder() + "/record.yml", Config.YAML);
         c.setAll(config);
         c.save();

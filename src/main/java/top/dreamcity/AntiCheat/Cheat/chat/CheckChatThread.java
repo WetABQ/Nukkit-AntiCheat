@@ -2,6 +2,7 @@ package top.dreamcity.AntiCheat.Cheat.chat;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.scheduler.AsyncTask;
 import top.dreamcity.AntiCheat.AntiCheatAPI;
 
 import java.util.HashMap;
@@ -19,17 +20,15 @@ import java.util.HashMap;
  * ||     |||      |||||||     |||||  |||       |||| ||||||||      |||||    |
  * ||||
  */
-public class CheckChatThread implements Runnable {
+public class CheckChatThread extends AsyncTask {
 
-    private Thread thread;
     private static HashMap<String, Integer> playerChat = new HashMap<>();
 
     public CheckChatThread() {
-        thread = new Thread(this);
-        thread.start();
+        Server.getInstance().getScheduler().scheduleAsyncTask(AntiCheatAPI.getInstance(), this);
     }
 
-    public void run() {
+    public void onRun() {
         while (true) {
             try {
                 for (Player player : Server.getInstance().getOnlinePlayers().values()) {
@@ -41,7 +40,7 @@ public class CheckChatThread implements Runnable {
                         }
                     }
                 }
-                thread.sleep(1000);
+                Thread.sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
