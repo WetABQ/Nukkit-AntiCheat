@@ -11,6 +11,7 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
+import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
@@ -121,6 +122,13 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        if (AntiCheatAPI.getInstance().getMasterConfig().getAntiAutoAim() && AntiAutoAim.containsKey(event.getPlayer().getName())) {
+            AntiAutoAim.get(event.getPlayer().getName()).getNpc().close();
+        }
+    }
+
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Reach reach = new Reach(event.getPlayer(), event.getBlock());
         if (reach.isCheat()) {
@@ -164,7 +172,7 @@ public class EventListener implements Listener {
             }
             event.setKnockBack(0.25F); // Nukkit KnockBack is so ‘long’
         }
-        if (event.getEntity() instanceof NPC) {
+        if (event.getEntity() instanceof NPC || event.getEntity().getNameTag().equals("'")) {
             event.setCancelled();
         }
     }

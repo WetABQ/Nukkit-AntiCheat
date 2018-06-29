@@ -25,6 +25,7 @@ public class NPC extends EntityHuman {
 
     public NPC(Position pos, byte[] skin, Player player) {
         super(pos.getLevel().getChunk((int) pos.getX() >> 4, (int) pos.getZ() >> 4), getEntityNBT(pos, skin));
+        this.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_INVISIBLE, false);
         this.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_ALWAYS_SHOW_NAMETAG, false);
         this.setDataFlag(Entity.DATA_FLAGS, Entity.DATA_FLAG_CAN_SHOW_NAMETAG, false);
         this.setHealth(999);

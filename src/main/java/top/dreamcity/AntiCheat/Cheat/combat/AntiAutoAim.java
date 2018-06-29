@@ -73,14 +73,18 @@ public class AntiAutoAim extends Combat {
         player.dataPacket(pk3);
         player.dataPacket(pk4);*/
         byte[] skin = image(AntiCheatAPI.getInstance().getMasterConfig().getSkinPath());
-        NPC npc = new NPC(new Position(player.getX(), player.getY() + 3, player.getZ(), player.getLevel()), skin, player);
-        npc.setNameTag("AntiCheat");
+        NPC npc = new NPC(new Position(player.getX(), player.getY() - 2, player.getZ(), player.getLevel()), skin, player);
+        npc.setNameTag("'");
         npc.setScale(0.0001F);
         this.npc = npc;
     }
 
     public void move(Player player) {
-        npc.teleport(new Location(player.x, player.y, player.z, player.yaw, player.pitch));
+        npc.teleport(new Location(player.x, player.y - 2, player.z, player.yaw, player.pitch));
+    }
+
+    public NPC getNpc() {
+        return npc;
     }
 
     private static byte[] image(String path) {
