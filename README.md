@@ -1,8 +1,8 @@
 # Nukkit-AntiCheat
 AntiCheat  - Nukkit plugin
 
-## I will use kotlin to rewrite the entire project
-## Reduce false positives and add more expandability features
+## The latest anti-cheat plugin has been released
+## But this is not a free plugin, you can apply for a trial or purchase by contacting wetabq@gmail.com
 --------
 
 ## Description
