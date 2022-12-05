@@ -1,9 +1,7 @@
 # Nukkit-AntiCheat
 AntiCheat  - Nukkit plugin
 
-## The latest anti-cheat plugin has been released
-## But this is not a free plugin, you can apply for a trial or purchase by contacting wetabq@gmail.com
-## [GitHub(WAC)](https://github.com/WetABQ/Nukkit-WAntiCheat)
+## See [WACPro](https://github.com/WetABQ/WAntiCheatPro)
 --------
 
 ## Description
